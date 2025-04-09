@@ -21,11 +21,13 @@ export function ScrollAnimation({
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add("animated");
-            entry.target.classList.add(animation);
+            // Make sure we're working with an HTMLElement which has style property
+            const target = entry.target as HTMLElement;
+            target.classList.add("animated");
+            target.classList.add(animation);
             
             if (delay > 0) {
-              entry.target.style.animationDelay = `${delay}ms`;
+              target.style.animationDelay = `${delay}ms`;
             }
           }
         });
