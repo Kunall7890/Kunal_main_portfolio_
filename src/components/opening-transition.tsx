@@ -20,17 +20,19 @@ export function OpeningTransition() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showTransition, setShowTransition] = useState(true);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [audioError, setAudioError] = useState(false);
   
   // Play sound effect when changing greetings
   useEffect(() => {
-    if (showTransition && audioRef.current) {
+    if (showTransition && audioRef.current && !audioError) {
       audioRef.current.src = greetings[currentIndex].sound;
       audioRef.current.volume = 0.5;
       audioRef.current.play().catch(err => {
         console.log("Couldn't play greeting sound:", err);
+        setAudioError(true);
       });
     }
-  }, [currentIndex, showTransition]);
+  }, [currentIndex, showTransition, audioError]);
   
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -62,6 +64,11 @@ export function OpeningTransition() {
     }
   }, []);
 
+  const handleAudioError = () => {
+    console.log("Audio error occurred");
+    setAudioError(true);
+  };
+
   return (
     <AnimatePresence>
       {showTransition && (
@@ -76,7 +83,7 @@ export function OpeningTransition() {
             }
           }}
         >
-          <audio ref={audioRef} className="hidden" />
+          <audio ref={audioRef} className="hidden" onError={handleAudioError} />
           
           <div className="flex items-center justify-center space-x-6 mb-8">
             <Coffee className="h-14 w-14 text-chai-dark animate-bounce-light" />

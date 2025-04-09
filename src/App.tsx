@@ -14,6 +14,7 @@ const queryClient = new QueryClient();
 
 const App = () => {
   const [transitionDone, setTransitionDone] = useState(false);
+  const [audioAvailable, setAudioAvailable] = useState(true);
   
   useEffect(() => {
     // Check if transition was already shown
@@ -32,6 +33,19 @@ const App = () => {
       
       return () => clearInterval(checkInterval);
     }
+
+    // Check if background audio file exists
+    fetch("/sounds/background-ambience.mp3", { method: 'HEAD' })
+      .then(response => {
+        if (!response.ok) {
+          setAudioAvailable(false);
+          console.log("Background audio file not available");
+        }
+      })
+      .catch(() => {
+        setAudioAvailable(false);
+        console.log("Background audio file not available");
+      });
   }, []);
 
   return (
@@ -41,7 +55,7 @@ const App = () => {
         <Sonner />
         <BrowserRouter>
           <OpeningTransition />
-          {transitionDone && (
+          {transitionDone && audioAvailable && (
             <SoundPlayer 
               src="/sounds/background-ambience.mp3" 
               loop={true} 

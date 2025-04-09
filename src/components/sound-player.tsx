@@ -1,5 +1,5 @@
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 type SoundPlayerProps = {
   src: string;
@@ -17,6 +17,7 @@ export const SoundPlayer = ({
   playOnMount = false
 }: SoundPlayerProps) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     if (audioRef.current) {
@@ -25,17 +26,19 @@ export const SoundPlayer = ({
   }, [volume]);
 
   useEffect(() => {
-    if (playOnMount && audioRef.current) {
+    if (playOnMount && audioRef.current && !error) {
       audioRef.current.play().catch(err => {
         console.log("Audio couldn't play automatically:", err);
+        setError(true);
       });
     }
-  }, [playOnMount]);
+  }, [playOnMount, error]);
 
   const play = () => {
-    if (audioRef.current) {
+    if (audioRef.current && !error) {
       audioRef.current.play().catch(err => {
         console.log("Audio play error:", err);
+        setError(true);
       });
     }
   };
@@ -46,6 +49,11 @@ export const SoundPlayer = ({
     }
   };
 
+  const handleError = () => {
+    console.log(`Failed to load audio: ${src}`);
+    setError(true);
+  };
+
   return (
     <audio
       ref={audioRef}
@@ -53,6 +61,7 @@ export const SoundPlayer = ({
       autoPlay={autoPlay}
       loop={loop}
       className="hidden"
+      onError={handleError}
     />
   );
 };
