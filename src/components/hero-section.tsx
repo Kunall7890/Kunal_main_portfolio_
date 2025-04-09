@@ -19,8 +19,19 @@ export function HeroSection() {
               <Code className="h-8 w-8 text-accent animate-bounce-light" style={{ animationDelay: "0.3s" }} />
             </div>
             
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter mb-4">
-              <span className="text-primary">Kunal Jaiswal</span>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter mb-4 relative inline-block">
+              <div className="absolute inset-0 -z-10 flex items-center justify-center opacity-10 dark:opacity-15">
+                <img 
+                  src="/profile-image.jpg" 
+                  alt="Profile Background" 
+                  className="w-full h-full object-cover rounded-full blur-sm"
+                  onError={(e) => {
+                    // Fallback if the image fails to load
+                    e.currentTarget.src = "/placeholder.svg";
+                  }}
+                />
+              </div>
+              <span className="text-primary relative z-10">Kunal Jaiswal</span>
             </h1>
             
             <div className="mb-4">
