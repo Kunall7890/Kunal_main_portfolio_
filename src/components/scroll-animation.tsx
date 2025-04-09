@@ -4,9 +4,16 @@ import React, { useEffect, useRef } from "react";
 interface ScrollAnimationProps {
   children: React.ReactNode;
   className?: string;
+  animation?: "fade-in" | "slide-up" | "slide-in-left" | "slide-in-right";
+  delay?: number;
 }
 
-export function ScrollAnimation({ children, className = "" }: ScrollAnimationProps) {
+export function ScrollAnimation({ 
+  children, 
+  className = "", 
+  animation = "fade-in",
+  delay = 0 
+}: ScrollAnimationProps) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -15,6 +22,11 @@ export function ScrollAnimation({ children, className = "" }: ScrollAnimationPro
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add("animated");
+            entry.target.classList.add(animation);
+            
+            if (delay > 0) {
+              entry.target.style.animationDelay = `${delay}ms`;
+            }
           }
         });
       },
@@ -34,7 +46,7 @@ export function ScrollAnimation({ children, className = "" }: ScrollAnimationPro
         observer.unobserve(ref.current);
       }
     };
-  }, []);
+  }, [animation, delay]);
 
   return (
     <div ref={ref} className={`animate-on-scroll ${className}`}>

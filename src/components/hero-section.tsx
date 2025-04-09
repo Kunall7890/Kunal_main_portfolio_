@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { GitHubIcon, LinkedInIcon } from "./social-icons";
 import { ArrowDown, Coffee, Code } from "lucide-react";
+import { ScrollAnimation } from "./scroll-animation";
 
 export function HeroSection() {
   return (
@@ -12,7 +13,7 @@ export function HeroSection() {
     >
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="animate-fade-in space-y-4">
+          <ScrollAnimation animation="fade-in" className="space-y-4">
             <div className="flex justify-center items-center space-x-3 mb-6">
               <Coffee className="h-8 w-8 text-chai-dark animate-bounce-light" />
               <Code className="h-8 w-8 text-accent animate-bounce-light" style={{ animationDelay: "0.3s" }} />
@@ -37,9 +38,9 @@ export function HeroSection() {
                 <em>"Coding is fun, fixing bugs shows your mettle."</em>
               </div>
             </div>
-          </div>
+          </ScrollAnimation>
 
-          <div className="flex flex-wrap justify-center gap-4 mt-8 animate-slide-up" style={{ animationDelay: "0.5s" }}>
+          <ScrollAnimation animation="slide-up" delay={300} className="flex flex-wrap justify-center gap-4 mt-8">
             <Button asChild className="rounded-full">
               <a href="#projects">View Projects</a>
             </Button>
@@ -49,9 +50,9 @@ export function HeroSection() {
             <Button variant="ghost" asChild className="rounded-full">
               <a href="#about">About Me</a>
             </Button>
-          </div>
+          </ScrollAnimation>
 
-          <div className="flex justify-center gap-4 mt-8 animate-slide-up" style={{ animationDelay: "0.8s" }}>
+          <ScrollAnimation animation="slide-up" delay={500} className="flex justify-center gap-4 mt-8">
             <a
               href="https://github.com/Kunall7890"
               target="_blank"
@@ -70,7 +71,7 @@ export function HeroSection() {
             >
               <LinkedInIcon className="h-6 w-6" />
             </a>
-          </div>
+          </ScrollAnimation>
         </div>
       </div>
 
