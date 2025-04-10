@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -13,27 +12,9 @@ import { useState, useEffect } from "react";
 const queryClient = new QueryClient();
 
 const App = () => {
-  const [transitionDone, setTransitionDone] = useState(false);
   const [audioAvailable, setAudioAvailable] = useState(true);
   
   useEffect(() => {
-    // Check if transition was already shown
-    const transitionShown = localStorage.getItem("openingTransitionShown");
-    if (transitionShown === "true") {
-      setTransitionDone(true);
-    } else {
-      // If not yet shown, listen for when it completes
-      const checkInterval = setInterval(() => {
-        const nowShown = localStorage.getItem("openingTransitionShown");
-        if (nowShown === "true") {
-          setTransitionDone(true);
-          clearInterval(checkInterval);
-        }
-      }, 500);
-      
-      return () => clearInterval(checkInterval);
-    }
-
     // Check if background audio file exists
     fetch("/sounds/background-ambience.mp3", { method: 'HEAD' })
       .then(response => {
@@ -49,28 +30,30 @@ const App = () => {
   }, []);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <OpeningTransition />
-          {transitionDone && audioAvailable && (
-            <SoundPlayer 
-              src="/sounds/background-ambience.mp3" 
-              loop={true} 
-              volume={0.2} 
-              playOnMount={true} 
-            />
-          )}
-          <Routes>
-            <Route path="/" element={<Index />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
-    </QueryClientProvider>
+    <div className="homepage">
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <OpeningTransition />
+            {audioAvailable && (
+              <SoundPlayer 
+                src="/sounds/background-ambience.mp3" 
+                loop={true} 
+                volume={0.2} 
+                playOnMount={true} 
+              />
+            )}
+            <Routes>
+              <Route path="/" element={<Index />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
+      </QueryClientProvider>
+    </div>
   );
 };
 

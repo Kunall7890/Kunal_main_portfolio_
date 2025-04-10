@@ -1,7 +1,9 @@
-
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Coffee, Code } from "lucide-react";
+import { Coffee, Code, Globe } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
 
 const greetings = [
   { text: "Hello", language: "English", sound: "/sounds/hello_english.mp3" },
@@ -21,6 +23,7 @@ export function OpeningTransition() {
   const [showTransition, setShowTransition] = useState(true);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [audioError, setAudioError] = useState(false);
+  const [progress, setProgress] = useState(0);
   
   // Play sound effect when changing greetings
   useEffect(() => {
@@ -38,6 +41,7 @@ export function OpeningTransition() {
     const timer = setTimeout(() => {
       if (currentIndex < greetings.length - 1) {
         setCurrentIndex(currentIndex + 1);
+        setProgress(((currentIndex + 1) / greetings.length) * 100);
       } else {
         // After showing all greetings, hide the transition
         setTimeout(() => {
@@ -49,21 +53,6 @@ export function OpeningTransition() {
     return () => clearTimeout(timer);
   }, [currentIndex]);
 
-  // Save the transition state in localStorage to prevent showing it on every refresh
-  useEffect(() => {
-    if (!showTransition) {
-      localStorage.setItem("openingTransitionShown", "true");
-    }
-  }, [showTransition]);
-
-  // Check if the transition was already shown
-  useEffect(() => {
-    const transitionShown = localStorage.getItem("openingTransitionShown");
-    if (transitionShown === "true") {
-      setShowTransition(false);
-    }
-  }, []);
-
   const handleAudioError = () => {
     console.log("Audio error occurred");
     setAudioError(true);
@@ -73,7 +62,7 @@ export function OpeningTransition() {
     <AnimatePresence>
       {showTransition && (
         <motion.div 
-          className="fixed inset-0 z-50 flex flex-col justify-center items-center bg-background"
+          className="fixed inset-0 z-50 flex flex-col justify-center items-center bg-background/95 backdrop-blur-sm"
           initial={{ opacity: 1 }}
           exit={{ 
             opacity: 0,
@@ -85,28 +74,42 @@ export function OpeningTransition() {
         >
           <audio ref={audioRef} className="hidden" onError={handleAudioError} />
           
-          <div className="flex items-center justify-center space-x-6 mb-8">
-            <Coffee className="h-14 w-14 text-chai-dark animate-bounce-light" />
-            <Code className="h-14 w-14 text-accent animate-bounce-light" style={{ animationDelay: "0.3s" }} />
-          </div>
-          
-          <div className="text-center">
-            <motion.div
-              key={currentIndex}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-              className="relative"
-            >
-              <h1 className="text-5xl md:text-6xl font-bold mb-2">
-                {greetings[currentIndex].text}
-              </h1>
-              <p className="text-muted-foreground">
-                {greetings[currentIndex].language}
-              </p>
-            </motion.div>
-          </div>
+          <Card className="p-8 max-w-md w-full mx-4 bg-background/80 backdrop-blur-sm border-primary/20 shadow-lg">
+            <div className="flex items-center justify-center space-x-6 mb-8">
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+              >
+                <Globe className="h-12 w-12 text-primary" />
+              </motion.div>
+              <div className="flex items-center space-x-4">
+                <Coffee className="h-10 w-10 text-chai-dark animate-bounce-light" />
+                <Code className="h-10 w-10 text-accent animate-bounce-light" style={{ animationDelay: "0.3s" }} />
+              </div>
+            </div>
+            
+            <div className="text-center space-y-4">
+              <motion.div
+                key={currentIndex}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                className="relative"
+              >
+                <h1 className="text-5xl font-bold mb-2 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                  {greetings[currentIndex].text}
+                </h1>
+                <p className="text-sm text-muted-foreground font-medium">
+                  {greetings[currentIndex].language}
+                </p>
+              </motion.div>
+
+              <div className="pt-4">
+                <Progress value={progress} className="h-1" />
+              </div>
+            </div>
+          </Card>
         </motion.div>
       )}
     </AnimatePresence>

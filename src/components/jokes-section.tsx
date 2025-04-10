@@ -1,8 +1,9 @@
-
 import React, { useState } from "react";
-import { Smile } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Smile, RefreshCw } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 const jokes = [
   {
@@ -52,33 +53,45 @@ export function JokesSection() {
   };
 
   return (
-    <section id="laughs" className="py-16 md:py-24 bg-secondary/30">
+    <section id="laughs" className="py-16 md:py-24">
       <div className="container mx-auto px-4 md:px-6">
-        <h2 className="section-heading">
-          <Smile className="h-6 w-6" />
-          Laughs in Code
-        </h2>
+        <div className="flex items-center gap-2 mb-8">
+          <Smile className="h-6 w-6 text-primary" />
+          <h2 className="text-2xl font-bold">Laughs in Code</h2>
+        </div>
 
         <div className="max-w-xl mx-auto">
-          <Card className="overflow-hidden">
-            <CardContent className="p-8">
-              <div className={`space-y-4 transition-opacity duration-500 ${isAnimating ? 'opacity-0' : 'opacity-100'}`}>
-                <div className="hindi-quote text-center text-lg">
-                  {jokes[currentJoke].hindi}
-                </div>
-                <div className="quote-translation text-center">
-                  <em>{jokes[currentJoke].english}</em>
-                </div>
-              </div>
+          <Card className="border-primary/20">
+            <CardHeader>
+              <CardTitle className="text-lg">Developer Humor</CardTitle>
+            </CardHeader>
+            <CardContent className="p-6">
+              <div className={`space-y-6 transition-opacity duration-500 ${isAnimating ? 'opacity-0' : 'opacity-100'}`}>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger className="w-full">
+                      <div className="hindi-quote text-center text-lg font-medium">
+                        {jokes[currentJoke].hindi}
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>{jokes[currentJoke].english}</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
 
-              <div className="flex justify-center mt-8">
-                <Button 
-                  onClick={getRandomJoke} 
-                  className="group animate-bounce-light text-lg"
-                >
-                  <span className="mr-2">LOL()</span>
-                  <span className="group-hover:rotate-12 transition-transform duration-200 inline-block">😂</span>
-                </Button>
+                <Separator />
+
+                <div className="flex justify-center">
+                  <Button 
+                    onClick={getRandomJoke} 
+                    variant="outline"
+                    className="group"
+                  >
+                    <RefreshCw className="h-4 w-4 mr-2 group-hover:rotate-180 transition-transform duration-500" />
+                    Next Joke
+                  </Button>
+                </div>
               </div>
             </CardContent>
           </Card>

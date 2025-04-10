@@ -1,10 +1,19 @@
-
 import React from "react";
 import { FileText, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 export function ResumeSection() {
+  const handleDownload = () => {
+    // Create a link element
+    const link = document.createElement('a');
+    link.href = '/resume/Kunal_jaiswal_CV.pdf';
+    link.download = 'Kunal_jaiswal_CV.pdf'; // This will be the filename when downloaded
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <section className="py-16 md:py-20 bg-gradient-to-r from-primary/10 to-accent/10">
       <div className="container mx-auto px-4 md:px-6 text-center">
@@ -28,7 +37,10 @@ export function ResumeSection() {
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button className="animate-pulse-glow gap-2 w-full sm:w-auto">
+                <Button 
+                  onClick={handleDownload}
+                  className="animate-pulse-glow gap-2 w-full sm:w-auto"
+                >
                   <Download className="h-4 w-4" />
                   Download Resume
                 </Button>
