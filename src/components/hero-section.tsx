@@ -48,10 +48,10 @@ export function HeroSection() {
                     
                     <div className="space-y-2">
                       <p className="text-xl md:text-2xl font-medium bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                        code crafter, bug squasher, and chai‑fueled dreamer
+                      Code. Caffeine. Chaos.
                       </p>
                       <p className="text-muted-foreground">
-                        Turning coffee into clean, efficient code & products.
+                      Living that build-break-debug-repeat lifestyle.
                       </p>
                     </div>
 
@@ -65,9 +65,9 @@ export function HeroSection() {
                     </div>
 
                     <div className="space-y-3 max-w-2xl mx-auto">
-                      <div className="hindi-quote text-lg">"Code likhne mein maza hai, bug fix karne mein dum hai."</div>
+                      <div className="hindi-quote text-lg">"Development mera zone hai, DSA mera backbone, aur error mera daily dose!"</div>
                       <div className="quote-translation mb-4 text-muted-foreground">
-                        <em>"Coding is fun, fixing bugs shows your mettle."</em>
+                        <em>"Development is my zone, DSA is my backbone, and errors are my daily dose!"</em>
                       </div>
                     </div>
                   </div>

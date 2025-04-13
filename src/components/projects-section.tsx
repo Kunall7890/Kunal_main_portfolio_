@@ -30,11 +30,11 @@ const Project: React.FC<ProjectProps> = ({
   stars,
 }) => {
   return (
-    <Card className={`project-card animate-slide-in-${direction} border-primary/20 hover:border-primary/40 transition-colors`}>
+    <Card className={`project-card animate-slide-in-${direction} border-primary/20 hover:border-primary/40 transition-colors bg-background/40 backdrop-blur-sm`}>
       <CardHeader>
         <div className="flex items-start justify-between">
           <div>
-            <CardTitle className="text-xl">{title}</CardTitle>
+            <CardTitle className="text-xl text-white">{title}</CardTitle>
             <CardDescription className="mt-2">
               <div className="flex flex-wrap gap-2">
                 {tech.map((item) => (
@@ -54,12 +54,12 @@ const Project: React.FC<ProjectProps> = ({
         </div>
       </CardHeader>
       <CardContent>
-        <p className="text-sm text-muted-foreground mb-4">{description}</p>
+        <p className="text-sm text-white/80 mb-4">{description}</p>
         <Separator className="my-4" />
         <TooltipProvider>
           <Tooltip>
-            <TooltipTrigger className="text-left">
-              <div className="hindi-quote text-sm">{hindiText}</div>
+            <TooltipTrigger className="text-left w-full">
+              <div className="hindi-quote text-sm text-white/90">{hindiText}</div>
             </TooltipTrigger>
             <TooltipContent>
               <p>{englishText}</p>
@@ -67,28 +67,23 @@ const Project: React.FC<ProjectProps> = ({
           </Tooltip>
         </TooltipProvider>
       </CardContent>
-      <CardFooter className="flex justify-between">
-        <Button 
-          variant="outline" 
-          size="sm" 
-          className="gap-1"
-          asChild
-        >
-          <a href={githubLink} target="_blank" rel="noopener noreferrer">
-            <Github className="h-4 w-4" />
-            Code
-          </a>
-        </Button>
-        <Button 
-          size="sm" 
-          className="gap-1"
-          asChild
-        >
-          <a href={demoLink} target="_blank" rel="noopener noreferrer">
-            <ExternalLink className="h-4 w-4" />
-            Live Demo
-          </a>
-        </Button>
+      <CardFooter className="flex gap-2">
+        {githubLink && (
+          <Button asChild variant="outline" size="sm" className="flex-1">
+            <a href={githubLink} target="_blank" rel="noopener noreferrer">
+              <Github className="h-4 w-4 mr-2" />
+              GitHub
+            </a>
+          </Button>
+        )}
+        {demoLink && (
+          <Button asChild variant="outline" size="sm" className="flex-1">
+            <a href={demoLink} target="_blank" rel="noopener noreferrer">
+              <ExternalLink className="h-4 w-4 mr-2" />
+              Live Demo
+            </a>
+          </Button>
+        )}
       </CardFooter>
     </Card>
   );
@@ -98,51 +93,77 @@ export function ProjectsSection() {
   const projects = [
     {
       title: "Expense AI",
-      description: "AI-powered expense tracker for real-time financial insights.",
-      hindiText: "Kharch pe nazar, wallet khush.",
-      englishText: "Keep an eye on expenses, keep your wallet happy.",
+      description: "Your personal finance guru that turns your spending habits into smart decisions. It's like having a CA who never judges your chai expenses! 🧮",
+      hindiText: "Paisa bachao, tension bhagao! AI bolta hai - 'Arre bhai, itna Swiggy?!' 🤖💰",
+      englishText: "Save money, skip stress! AI be like - 'Bruh, that much on Swiggy?!'",
       tech: ["Next.js", "Python", "PostgreSQL", "TailwindCSS", "OpenAI"],
       direction: "left" as const,
-      githubLink: "https://github.com/Kunall7890/expense-ai",
-      demoLink: "https://expense-ai-demo.com",
+      githubLink: "https://github.com/Kunall7890/Expense_AI",
+      demoLink: "https://expense-ai-seven.vercel.app/",
       stars: 42
     },
     {
       title: "Real-Time Cinema Ticket Booking",
-      description: "Full-stack app with seat selection & secure Stripe payments.",
-      hindiText: "Seat pakki, mood mast.",
-      englishText: "Secure seat, happy mood.",
+      description: "Book your movie seats faster than you can say 'popcorn'! Real-time updates so fast, you'll think it's running on chai power! 🎬",
+      hindiText: "Cinema hall mein seat aur dil mein beat, dono real-time mein book ho jaate hain! 🎥🍿",
+      englishText: "Seats in the hall and beats in the heart, both booked in real-time!",
       tech: ["MERN", "Socket.IO", "MongoDB", "Stripe"],
       direction: "right" as const,
-      githubLink: "https://github.com/Kunall7890/cinema-booking",
-      demoLink: "https://cinema-booking-demo.com",
+      githubLink: "https://github.com/Kunall7890/reel-time-ticketing-hub",
+      demoLink: "https://reel-time-ticketing-hub-kunals-projects-3cb1dbf9.vercel.app/",
       stars: 28
     },
     {
       title: "AI-Powered Resume Screener",
-      description: "ATS ranking with NLP-based similarity scoring.",
-      hindiText: "Resume dekha, HR khush hua.",
-      englishText: "Scanned resumes, impressed HR.",
+      description: "Your resume's best friend! It's like having a career counselor who actually understands both tech and your mom's expectations! 📝",
+      hindiText: "Resume ko AI se judge karwao, HR ko impress karwao! Mummy khush, future bright! ✨",
+      englishText: "Let AI judge your resume, impress HR! Happy mom, bright future!",
       tech: ["Python", "FastAPI", "MongoDB", "React.js"],
       direction: "left" as const,
-      githubLink: "https://github.com/Kunall7890/resume-screener",
-      demoLink: "https://resume-screener-demo.com",
+      githubLink: "https://github.com/Kunall7890/Ai-powered-resume-screener",
+      demoLink: "https://ai-powered-resume-screener-bwxp.vercel.app/",
       stars: 35
     },
   ];
 
   return (
-    <section id="projects" className="py-16 md:py-24">
-      <div className="container mx-auto px-4 md:px-6">
+    <section 
+      id="projects" 
+      className="py-16 md:py-24 relative min-h-screen bg-cover bg-center bg-no-repeat" 
+      style={{ 
+        backgroundImage: "url('/images/ram-mandir.jpg')",
+        backgroundAttachment: "fixed"
+      }}
+    >
+      <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-black/40"></div>
+      <div className="container mx-auto px-4 md:px-6 relative z-10">
         <div className="flex items-center gap-2 mb-8">
           <Briefcase className="h-6 w-6 text-primary" />
-          <h2 className="text-2xl font-bold">Projects</h2>
+          <h2 className="text-2xl font-bold text-white">Projects</h2>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map((project) => (
-            <Project key={project.title} {...project} />
+            <Project 
+              key={project.title} 
+              {...project} 
+            />
           ))}
+        </div>
+
+        <div className="text-center mt-8">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <div className="hindi-quote text-lg text-white/90">
+                  "Har project ek kahani, har bug ek lesson, aur har deployment ek adventure!" 🚀
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>"Every project a story, every bug a lesson, and every deployment an adventure!"</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
       </div>
     </section>

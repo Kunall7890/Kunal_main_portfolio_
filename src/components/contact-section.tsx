@@ -1,187 +1,136 @@
-import React, { useState } from "react";
-import { Mail, Phone, MapPin, Github, Linkedin, Send, Loader2 } from "lucide-react";
+import React from "react";
+import { Mail, Phone, MapPin, Github, Linkedin } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { useToast } from "@/components/ui/use-toast";
-import emailjs from '@emailjs/browser';
-
-interface FormData {
-  name: string;
-  email: string;
-  message: string;
-}
 
 export function ContactSection() {
-  const { toast } = useToast();
-  const [formData, setFormData] = useState<FormData>({
-    name: "",
-    email: "",
-    message: "",
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [errors, setErrors] = useState<Partial<FormData>>({});
-
-  const validateForm = (): boolean => {
-    const newErrors: Partial<FormData> = {};
-    
-    if (!formData.name.trim()) {
-      newErrors.name = "Name is required";
-    }
-    
-    if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Please enter a valid email";
-    }
-    
-    if (!formData.message.trim()) {
-      newErrors.message = "Message is required";
-    }
-    
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-    // Clear error when user starts typing
-    if (errors[name as keyof FormData]) {
-      setErrors(prev => ({
-        ...prev,
-        [name]: undefined
-      }));
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!validateForm()) {
-      return;
-    }
-
-    setIsSubmitting(true);
-    
-    try {
-      // Send email using EmailJS
-      const templateParams = {
-        from_name: formData.name,
-        from_email: formData.email,
-        message: formData.message,
-        to_email: "jaiswallkunal786@gmail.com"
-      };
-
-      await emailjs.send(
-        'YOUR_SERVICE_ID', // Replace with your EmailJS service ID
-        'YOUR_TEMPLATE_ID', // Replace with your EmailJS template ID
-        templateParams,
-        'YOUR_PUBLIC_KEY' // Replace with your EmailJS public key
-      );
-      
-      toast({
-        title: "Message Sent!",
-        description: "Thank you for reaching out. I'll get back to you soon.",
-      });
-      
-      // Reset form
-      setFormData({
-        name: "",
-        email: "",
-        message: "",
-      });
-    } catch (error) {
-      console.error('Error sending email:', error);
-      toast({
-        title: "Error",
-        description: "Something went wrong. Please try again later.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
   return (
-    <section id="contact" className="py-16 md:py-24 bg-secondary/30">
-      <div className="container mx-auto px-4 md:px-6">
+    <section 
+      id="contact" 
+      className="py-16 md:py-24 relative min-h-[70vh]"
+      style={{
+        backgroundImage: 'url("/images/contact-me.jpg")',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        backgroundAttachment: 'fixed'
+      }}
+    >
+      <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/50 to-background/30" />
+      <div className="container mx-auto px-4 md:px-6 relative">
         <div className="flex items-center gap-2 mb-8">
           <Mail className="h-6 w-6 text-primary" />
-          <h2 className="text-2xl font-bold">Contact Me</h2>
+          <h2 className="text-2xl font-bold text-white">Let&apos;s Connect( ) ⇒ Magic 🪄</h2>
         </div>
 
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger className="text-center max-w-2xl mx-auto mb-8">
-              <div className="hindi-quote text-lg">
-                "Aapka ek message mere system ke liye 'hello world' jaisa hoga."
+              <div className="space-y-2">
+                <div className="hindi-quote text-lg text-white">
+                  "Ek message bhejo, response time guaranteed,
+                  <br/>Chai pe charcha, ya code pe debate!" 🚀
+                </div>
+                <div className="text-sm text-white/80">
+                  <em>"Send a message, response time guaranteed,
+                  <br/>Chat over chai, or debate about code!"</em>
+                </div>
               </div>
             </TooltipTrigger>
             <TooltipContent>
-              <p>"Your message would be like a 'hello world' for my system."</p>
+              <p>Promise.resolve(quickResponse) 😉</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto justify-center">
-          <div className="space-y-6 animate-slide-in-left">
-            <Card className="border-primary/20">
-              <CardHeader className="text-center">
-                <CardTitle className="text-lg">Get in Touch</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-secondary/50 transition-colors">
-                  <Mail className="h-5 w-5 text-primary" />
-                  <div>
-                    <div className="text-sm text-muted-foreground">Email</div>
-                    <div className="font-medium">jaiswallkunal786@gmail.com</div>
-                  </div>
+        <div className="max-w-xl mx-auto">
+          <Card className="border-primary/20 bg-background/40 backdrop-blur-sm transform hover:scale-[1.02] transition-all duration-300">
+            <CardHeader className="text-center">
+              <CardTitle className="text-lg text-white">Connection Endpoints 🔌</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <a 
+                href="mailto:jaiswallkunal786@gmail.com" 
+                className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/10 transition-all duration-300 group"
+              >
+                <Mail className="h-5 w-5 text-primary group-hover:rotate-12 transition-transform" />
+                <div>
+                  <div className="text-sm text-white/70">Email API</div>
+                  <div className="font-medium text-white">jaiswallkunal786@gmail.com</div>
+                  <div className="text-xs text-white/60">Response time: Faster than compiling React ⚡</div>
                 </div>
+              </a>
 
-                <Separator />
+              <Separator className="bg-white/20" />
 
-                <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-secondary/50 transition-colors">
-                  <Phone className="h-5 w-5 text-primary" />
-                  <div>
-                    <div className="text-sm text-muted-foreground">Phone</div>
-                    <div className="font-medium">+91 19747 693</div>
-                  </div>
+              <a 
+                href="tel:+919119747693"
+                className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/10 transition-all duration-300 group"
+              >
+                <Phone className="h-5 w-5 text-primary group-hover:rotate-12 transition-transform" />
+                <div>
+                  <div className="text-sm text-white/70">Voice Channel</div>
+                  <div className="font-medium text-white">+919119747693</div>
+                  <div className="text-xs text-white/60">No async/await, instant connection! 📞</div>
                 </div>
+              </a>
 
-                <Separator />
+              <Separator className="bg-white/20" />
 
-                <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-secondary/50 transition-colors">
-                  <MapPin className="h-5 w-5 text-primary" />
-                  <div>
-                    <div className="text-sm text-muted-foreground">Location</div>
-                    <div className="font-medium">Roorkee, Uttarakhand</div>
-                  </div>
+              <a 
+                href="https://maps.google.com/?q=Roorkee,Uttarakhand" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/10 transition-all duration-300 group"
+              >
+                <MapPin className="h-5 w-5 text-primary group-hover:rotate-12 transition-transform" />
+                <div>
+                  <div className="text-sm text-white/70">Base Location</div>
+                  <div className="font-medium text-white">Roorkee, Uttarakhand</div>
+                  <div className="text-xs text-white/60">Where chai meets code 🍵</div>
                 </div>
-              </CardContent>
-            </Card>
+              </a>
+            </CardContent>
+          </Card>
 
-            <div className="flex gap-4 justify-center">
-              <Button asChild variant="outline" className="flex-1">
-                <a href="https://github.com/Kunall7890" target="_blank" rel="noopener noreferrer">
-                  <Github className="h-4 w-4 mr-2" />
-                  GitHub
-                </a>
-              </Button>
-              <Button asChild variant="outline" className="flex-1">
-                <a href="https://linkedin.com/in/kunaljaiswal7877" target="_blank" rel="noopener noreferrer">
-                  <Linkedin className="h-4 w-4 mr-2" />
-                  LinkedIn
-                </a>
-              </Button>
-            </div>
+          <div className="flex gap-2 mt-6">
+            <Button 
+              asChild 
+              variant="outline" 
+              className="flex-1 bg-background/40 backdrop-blur-sm border-white/20 text-white hover:bg-white/10 hover:text-white group transition-all duration-300"
+            >
+              <a href="https://github.com/Kunall7890" target="_blank" rel="noopener noreferrer">
+                <Github className="h-4 w-4 mr-2 group-hover:rotate-12 transition-transform" />
+                git checkout profile
+              </a>
+            </Button>
+            <Button 
+              asChild 
+              variant="outline" 
+              className="flex-1 bg-background/40 backdrop-blur-sm border-white/20 text-white hover:bg-white/10 hover:text-white group transition-all duration-300"
+            >
+              <a href="https://linkedin.com/in/kunaljaiswal7877" target="_blank" rel="noopener noreferrer">
+                <Linkedin className="h-4 w-4 mr-2 group-hover:rotate-12 transition-transform" />
+                connect --professional
+              </a>
+            </Button>
+          </div>
+
+          <div className="text-center mt-6">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <div className="hindi-quote text-sm text-white/80">
+                    "Bug fix ke liye DM, chai pe discussion ke liye call!" 🎯
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>"DM for bug fixes, call for chai discussions!"</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
         </div>
       </div>
